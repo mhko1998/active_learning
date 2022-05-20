@@ -30,8 +30,6 @@ def main():
     num_classes = int(config['num_classes'])
     ratio = int(config['ratio'])
 
-
-    ###
     run = neptune.init(
     project="mhko1998/active",
     api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJjOGQ5Y2U4OC0xZWIzLTQyZjQtYWIyMy0wNTA5N2ExMzg2N2IifQ==",
