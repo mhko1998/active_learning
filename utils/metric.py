@@ -2,6 +2,7 @@ import json
 import random
 import torch
 import os
+from tqdm import tqdm
 
 import dataset
 import module
@@ -13,13 +14,16 @@ def read_conf(json_path):
 
 def random_reduce(ratio, trainimages, beforeimages):
     originlen=len(trainimages)
+
     for i in beforeimages:
         trainimages.remove(i)
+   
     rd_trainimages = random.sample(trainimages, k=int(ratio*originlen))
-    beforeimages.extend(rd_trainimages)
-    return beforeimages, beforeimages
+    rd_trainimages.extend(beforeimages)
+    
+    return rd_trainimages
 
-def leconf_reduce(ratio, trainimages, beforeimages, traindir, testtrans, batch_size, teacher_path, startpoint):
+def leconf_reduce(ratio, trainimages, beforeimages, traindir, testtrans, batch_size, teacher_path, startpoint, num_classes):
     originlen=len(trainimages)
     
     for i in beforeimages:
@@ -29,7 +33,8 @@ def leconf_reduce(ratio, trainimages, beforeimages, traindir, testtrans, batch_s
     check_cf_testloader=torch.utils.data.DataLoader(check_cf_testset, batch_size=batch_size, shuffle=False, num_workers=8)
     
     device = 'cuda:0'
-    net = module.model.net()
+    net = module.net(num_classes)
+    net.to(device)
 
     net.load_state_dict(torch.load(teacher_path+'/last.pth.tar', map_location= device)['state_dict'])
 
@@ -53,5 +58,5 @@ def leconf_reduce(ratio, trainimages, beforeimages, traindir, testtrans, batch_s
     rd_trainimages=[]
     for i in indices:
         rd_trainimages.append(trainimages[i])
-    beforeimages.extend(rd_trainimages)
-    return beforeimages, beforeimages
+    rd_trainimages.extend(beforeimages)
+    return rd_trainimages
