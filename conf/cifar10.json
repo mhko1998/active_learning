@@ -1,0 +1,8 @@
+{
+    "epoch" : "100",
+    "dataset" : "/home/minhwan/active_learning/dataset/",
+    "batch_size" : 32,
+    "save_path" : "/home/minhwan/active_learning/path/",
+    "num_classes" : 10,
+    "ratio" : 0.1
+}
