@@ -13,11 +13,11 @@ def activerun(method, save_path, teacher_path, startpoint, max_epoch, dataset_pa
     beforeimages = []
     
     if teacher != 'base' and teacher != '':
-        list = open(teacher_path+"trainset.txt",'r')
+        list = open(teacher_path+"/trainset.txt",'r')
         line = list.readline()
         beforeimages = ast.literal_eval(line)
     
-    trainloader, testloader, beforeimages = dataset.data_loader(ratio, beforeimages, method, batch_size, teacher_path, startpoint, dataset_path)
+    trainloader, testloader, beforeimages = dataset.data_loader(ratio, beforeimages, method, batch_size, teacher_path, startpoint, dataset_path, num_classes)
     
     net = module.net(num_classes)
     net = net.to(device)
