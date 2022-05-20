@@ -28,7 +28,7 @@ def main():
     teacher_path = config['save_path']+args.data+'/'+args.teacher_path
     teacher = args.teacher_path
     num_classes = int(config['num_classes'])
-    ratio = int(config['ratio'])
+    ratio = float(config['ratio'])
 
     run = neptune.init(
     project="mhko1998/active",
