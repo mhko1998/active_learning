@@ -42,18 +42,17 @@ class ImageDataLoader(Dataset):
         image=self.transform(image)
         return image, label
 
-def data_loader(ratio, beforeimages, method, batch_size, teacher_path, startpoint, dataset_path):
-    beforeimages=[]
+def data_loader(ratio, beforeimages, method, batch_size, teacher_path, startpoint, dataset_path, num_classes):
     traintrans=transforms.Compose([transforms.RandomHorizontalFlip(), transforms.ToTensor(),])
     testtrans=transforms.Compose([transforms.ToTensor(),])
     trainimages= glob.glob(dataset_path+'/train/*/*.png')
     traindir = glob.glob(dataset_path+'/train/*')
 
     if method=="random":
-        trainimages, beforeimages= utils.random_reduce(ratio, trainimages, beforeimages)
-    
+        trainimages= utils.random_reduce(ratio, trainimages, beforeimages)
+        
     elif method=="leconf_reduce":
-        trainimages, beforeimages= utils.leconf_reduce(ratio, trainimages, beforeimages, traindir, testtrans, batch_size, teacher_path, startpoint)
+        trainimages= utils.leconf_reduce(ratio, trainimages, beforeimages, traindir, testtrans, batch_size, teacher_path, startpoint, num_classes)
     
     testimages=glob.glob(dataset_path+'/test/*/*.png')
     testdir = glob.glob(dataset_path+'/test/*')
@@ -64,4 +63,4 @@ def data_loader(ratio, beforeimages, method, batch_size, teacher_path, startpoin
     trainloader=torch.utils.data.DataLoader(trainset,batch_size=batch_size,shuffle=True,num_workers=8)
     testloader=torch.utils.data.DataLoader(testset,batch_size=batch_size,shuffle=False,num_workers=8)
     
-    return trainloader, testloader, beforeimages
+    return trainloader, testloader, trainimages
